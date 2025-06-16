@@ -77,13 +77,13 @@ ADD modelscopedown.py ./
 RUN python3 modelscopedown.py
 #RUN modelscope download cjc1887415157/stable-video-diffusion-img2vid-xt-1-1 --local-dir /comfyui/models/checkpoints
 #安装indextts
-#WORKDIR /comfyui/custom_nodes/
-#RUN git clone https://github.com/chenpipi0807/ComfyUI-Index-TTS.git
-#WORKDIR /comfyui/models/
-#RUN mkdir IndexTTS-1.5
-#RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
-#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
-#RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes/
+RUN git clone https://github.com/chenpipi0807/ComfyUI-Index-TTS.git
+WORKDIR /comfyui/models/
+RUN mkdir IndexTTS-1.5
+RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
+WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
+RUN pip install -r requirements.txt
 #RUN pip show transformers torch
 WORKDIR /comfyui
 # Install runpod
