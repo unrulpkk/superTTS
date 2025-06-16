@@ -1,0 +1,79 @@
+{
+  "input": {
+    "workflow": {
+      "10": {
+        "inputs": {
+          "audio": "bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3"
+        },
+        "class_type": "LoadAudio",
+        "_meta": {
+          "title": "加载音频"
+        }
+      },
+      "11": {
+        "inputs": {
+          "tts_text": "首先这个方案一套下来并不便宜，目测4090加主板CPU加高频DDR5 ECC内存",
+          "speed": 1,
+          "seed": 1221,
+          "text_frontend": true,
+          "polyreplace": false,
+          "prompt_text": "关于这部剧的烂，很多人都把矛头指向了王大主演，他固然是个天坑，但这部剧最大的问题是在于他把一个男频爽文拍成了古偶剧，把",
+          "instruct_text": "",
+          "prompt_wav": [
+            "10",
+            0
+          ]
+        },
+        "class_type": "CosyVoice2ZeroShotNode",
+        "_meta": {
+          "title": "CosyVoice2 音色克隆"
+        }
+      },
+      "12": {
+        "inputs": {
+          "speaker_name": "speaker4444",
+          "spk_model": [
+            "11",
+            1
+          ]
+        },
+        "class_type": "CosyVoiceSaveSpeakerModelNode",
+        "_meta": {
+          "title": "CosyVoice 保存说话人模型"
+        }
+      },
+      "13": {
+        "inputs": {
+          "filename_prefix": "audio/ComfyUI",
+          "audio": [
+            "11",
+            0
+          ]
+        },
+        "class_type": "SaveAudio",
+        "_meta": {
+          "title": "保存音频"
+        }
+      }
+    },
+    "urls": [
+        {
+            "url": "https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3",
+            "name": "bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3",
+            "path":"/comfyui/input"
+        },
+        {
+          "url": "https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/31f9d662-61c7-4622-9864-dddd.pt",
+          "name": "31f9d662-61c7-4622-9864-dddd.pt",
+          "path":"/comfyui/models/CosyVoice/Speaker"
+        }
+    ],
+    "uploadFiles":[
+      {
+        "filename":"61g9d662-61c7-4622-9864-dddd.pt",
+        "path":"/comfyui/models/CosyVoice/Speaker",
+        "class_type":"CosyVoiceSaveSpeakerModelNode"
+      }
+    ]
+  }
+}

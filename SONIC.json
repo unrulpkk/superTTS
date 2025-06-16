@@ -1,0 +1,152 @@
+{
+  "input": {
+    "workflow": {
+    "1": {
+      "inputs": {
+        "sonic_unet": "unet.pth",
+        "ip_audio_scale": 1,
+        "use_interframe": true,
+        "dtype": "fp16",
+        "model": [
+          "3",
+          0
+        ]
+      },
+      "class_type": "SONICTLoader",
+      "_meta": {
+        "title": "SONICTLoader"
+      }
+    },
+    "2": {
+      "inputs": {
+        "seed": 1820635180,
+        "inference_steps": 25,
+        "dynamic_scale": 0.5,
+        "fps": 25,
+        "model": [
+          "1",
+          0
+        ],
+        "data_dict": [
+          "4",
+          0
+        ]
+      },
+      "class_type": "SONICSampler",
+      "_meta": {
+        "title": "SONICSampler"
+      }
+    },
+    "3": {
+      "inputs": {
+        "ckpt_name": "svd_xt_1_1.safetensors"
+      },
+      "class_type": "ImageOnlyCheckpointLoader",
+      "_meta": {
+        "title": "Checkpoint加载器（仅图像）"
+      }
+    },
+    "4": {
+      "inputs": {
+        "min_resolution": 512,
+        "duration": 10000,
+        "expand_ratio": 1,
+        "clip_vision": [
+          "3",
+          1
+        ],
+        "vae": [
+          "3",
+          2
+        ],
+        "audio": [
+          "18",
+          0
+        ],
+        "image": [
+          "6",
+          0
+        ],
+        "weight_dtype": [
+          "8",
+          1
+        ]
+      },
+      "class_type": "SONIC_PreData",
+      "_meta": {
+        "title": "SONIC_PreData"
+      }
+    },
+    "6": {
+      "inputs": {
+        "image": "mybestspace.png"
+      },
+      "class_type": "LoadImage",
+      "_meta": {
+        "title": "加载图像"
+      }
+    },
+    "7": {
+      "inputs": {
+        "frame_rate": [
+          "2",
+          1
+        ],
+        "loop_count": 0,
+        "filename_prefix": "AnimateDiff",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": false,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": false,
+        "images": [
+          "2",
+          0
+        ],
+        "audio": [
+          "18",
+          0
+        ]
+      },
+      "class_type": "VHS_VideoCombine",
+      "_meta": {
+        "title": "Video Combine 🎥🅥🅗🅢"
+      }
+    },
+    "8": {
+      "inputs": {
+        "sonic_unet": "unet.pth",
+        "ip_audio_scale": 1,
+        "use_interframe": true,
+        "dtype": "fp16",
+        "model": [
+          "3",
+          0
+        ]
+      },
+      "class_type": "SONICTLoader",
+      "_meta": {
+        "title": "SONICTLoader"
+      }
+    },
+    "18": {
+      "inputs": {
+        "audio": "1749453157587055032-278118248968310.mp3"
+      },
+      "class_type": "LoadAudio",
+      "_meta": {
+        "title": "加载音频"
+      }
+    }
+  },
+    "urls": [
+        {
+            "url": "https://yinghuan-static.oss-cn-hangzhou.aliyuncs.com/mybestspace.png",
+            "name": "mybestspace.png",
+            "path":"/comfyui/input"
+        }
+    ]
+  }
+}

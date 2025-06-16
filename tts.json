@@ -1,0 +1,57 @@
+{
+    "input": {
+      "workflow": {
+        "11": {
+          "inputs": {
+            "tts_text": "首先这个方案一套下来并不便宜，目测4090加主板CPU加高频DDR5 ECC内存",
+            "speed": 1,
+            "seed": 821,
+            "text_frontend": true,
+            "polyreplace": false,
+            "prompt_text": "",
+            "instruct_text": "用非常愤怒的语气说",
+            "speaker_model": [
+              "14",
+              0
+            ]
+          },
+          "class_type": "CosyVoice2ZeroShotNode",
+          "_meta": {
+            "title": "CosyVoice2 音色克隆"
+          }
+        },
+        "13": {
+          "inputs": {
+            "filename_prefix": "audio/ComfyUI",
+            "audio": [
+              "11",
+              0
+            ]
+          },
+          "class_type": "SaveAudio",
+          "_meta": {
+            "title": "保存音频"
+          }
+        },
+        "14": {
+          "inputs": {
+            "speaker_name": "61g9d662-61c7-4622-9864-dddd.pt"
+          },
+          "class_type": "CosyVoiceLoadSpeakerModelNode",
+          "_meta": {
+            "title": "CosyVoice 加载说话人模型"
+          }
+        }
+      },
+      "urls": [
+          {
+            "url": "https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/61g9d662-61c7-4622-9864-dddd.pt",
+            "name": "61g9d662-61c7-4622-9864-dddd.pt",
+            "path":"/comfyui/models/CosyVoice/Speaker"
+          }
+      ],
+      "uploadFiles":[
+      ]
+    }
+  }
+  
