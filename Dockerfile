@@ -44,6 +44,10 @@ RUN git clone https://github.com/unrulpkk/comfyuifunaudiollmv3.git
 WORKDIR /comfyui/custom_nodes/comfyuifunaudiollmv3
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/
+RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+WORKDIR /comfyui/custom_nodes/ComfyUI-VideoHelperSuite
+RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes/
 RUN git clone https://github.com/smthemex/ComfyUI_Sonic.git
 WORKDIR /comfyui/custom_nodes/ComfyUI_Sonic
 RUN pip install -r requirements.txt
