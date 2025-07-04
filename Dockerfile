@@ -55,9 +55,10 @@ RUN pip install -U modelscope
 #Multitalk
 WORKDIR /comfyui/custom_nodes/
 RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
-https://github.com/chflame163/ComfyUI_LayerStyle.git
-https://github.com/kijai/ComfyUI-KJNodes.git
-https://github.com/christian-byrne/audio-separation-nodes-comfyui.git
+RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle.git
+RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git
+RUN git clone https://github.com/christian-byrne/audio-separation-nodes-comfyui.git
+RUN git clone -b multitalk ComfyUI-WanVideoWrapper
 WORKDIR /comfyui/custom_nodes/ComfyUI-Custom-Scripts
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI_LayerStyle
@@ -65,6 +66,8 @@ RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/KJNodes
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/audio-separation-nodes-comfyui
+RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
 RUN pip install -r requirements.txt
 #Multitalk
 #WORKDIR /comfyui/models/
