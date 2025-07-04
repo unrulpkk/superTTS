@@ -1,7 +1,8 @@
 # Use Nvidia CUDA base image
 FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
 RUN apt-get update && apt-get install -y cuda-nvcc-12-4
-RUN apt-get install -y cuda-toolkit-12-4
+RUN apt-get install -y cuda-nvcc-12-4 cuda-toolkit-12-4 && \
+    ln -s /usr/local/cuda/extras/CUPTI/include/cuda_profiler_api.h /usr/local/cuda/include/cuda_profiler_api.h
 RUN nvcc --version
 #FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04 as base
 # Install libGL.so.1
@@ -50,9 +51,6 @@ RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 WORKDIR /comfyui/custom_nodes/ComfyUI-VideoHelperSuite
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/models/
-RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-WORKDIR /comfyui/models/ComfyUI-VideoHelperSuite
-RUN pip install -r requirements.txt
 RUN pip install -U modelscope
 #Multitalk
 WORKDIR /comfyui/custom_nodes/
@@ -82,6 +80,9 @@ RUN mkdir IndexTTS-1.5
 RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
 WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
 RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
+RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" \
+    python3 setup.py build_ext --inplace || true
 #RUN pip show transformers torch
 WORKDIR /comfyui
 # Install runpod
