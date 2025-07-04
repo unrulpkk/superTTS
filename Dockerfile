@@ -70,6 +70,12 @@ RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
 RUN pip install -r requirements.txt
 #Multitalk
+#Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
+#WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
+#Wan2_1_VAE_bf16.safetensors
+#Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
+#umt5-xxl-enc-fp8_e4m3fn.safetensors
+#Wan21_Uni3C_controlnet_fp16.safetensors 
 #WORKDIR /comfyui/models/
 #WORKDIR /
 #ADD modelscopedown.py ./
