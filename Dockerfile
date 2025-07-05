@@ -101,6 +101,9 @@ RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 \
 RUN mkdir -p /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build && \
     cp anti_alias_activation_cuda*.so /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build/
 #RUN pip show transformers torch
+# 添加脚本并执行一次
+COPY preload_indextts.py /comfyui/
+RUN python3 /comfyui/preload_indextts.py
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
