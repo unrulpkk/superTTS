@@ -1,0 +1,14 @@
+https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
+https://huggingface.co/Kijai/WanVideo_comfy/blob/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
+https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1_VAE_bf16.safetensors
+https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
+https://huggingface.co/Kijai/WanVideo_comfy/blob/main/umt5-xxl-enc-fp8_e4m3fn.safetensors
+https://huggingface.co/Kijai/WanVideo_comfy/blob/main/Wan21_Uni3C_controlnet_fp16.safetensors
+
+clip_vision_h.safetensors 需要确认下载位置
+
+
+
+
+
+
