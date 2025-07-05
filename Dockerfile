@@ -92,10 +92,24 @@ RUN mkdir IndexTTS-1.5
 RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
 WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
 RUN pip install -r requirements.txt
+# 编译 CUDA 扩展并放入模型路径下，防止运行时重新 build
 WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
-RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" \
-    python3 setup.py build_ext --inplace || true
+RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 \
+    python3 setup.py build_ext --inplace
+
+# 将生成的 .so 文件复制到推理运行时路径（可选，根据 ComfyUI-Index-TTS 中 import path 来定）
+RUN mkdir -p /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build && \
+    cp anti_alias_activation_cuda*.so /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build/
 #RUN pip show transformers torch
+# 添加脚本并执行一次
+COPY preload_indextts.py /comfyui/
+RUN python3 /comfyui/preload_indextts.py
+# 提前 warmup
+COPY preload_warmup.py /comfyui/
+RUN python3 /comfyui/preload_warmup.py
+
+# 字体缓存
+RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
@@ -115,7 +129,10 @@ RUN git clone https://huggingface.co/FunAudioLLM/CosyVoice2-0.5B.git  models/Cos
 
 WORKDIR /comfyui/input
 RUN wget https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3
-
+# python 加速 flag
+ENV PYTHONOPTIMIZE=2
+ENV PYTHONUNBUFFERED=1
+ENV TRANSFORMERS_VERBOSITY=error
 # Go back to the root
 WORKDIR /
 # Add the start and the handler
