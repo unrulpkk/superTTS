@@ -104,6 +104,12 @@ RUN mkdir -p /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free
 # 添加脚本并执行一次
 COPY preload_indextts.py /comfyui/
 RUN python3 /comfyui/preload_indextts.py
+# 提前 warmup
+COPY preload_warmup.py /comfyui/
+RUN python3 /comfyui/preload_warmup.py
+
+# 字体缓存
+RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
@@ -123,7 +129,10 @@ RUN git clone https://huggingface.co/FunAudioLLM/CosyVoice2-0.5B.git  models/Cos
 
 WORKDIR /comfyui/input
 RUN wget https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3
-
+# python 加速 flag
+ENV PYTHONOPTIMIZE=2
+ENV PYTHONUNBUFFERED=1
+ENV TRANSFORMERS_VERBOSITY=error
 # Go back to the root
 WORKDIR /
 # Add the start and the handler
