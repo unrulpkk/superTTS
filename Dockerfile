@@ -67,12 +67,12 @@ RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
 RUN pip install -r requirements.txt
 #Multitalk
-RUN wget https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors -O /comfyui/models/lora/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
-RUN wget https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors -O /comfyui/models/diffusion_models/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors 
-RUN wget https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors -O /comfyui/models/vae/Wan2_1_VAE_bf16.safetensors
-RUN wget https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors -O /comfyui/models/diffusion_models/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
-RUN wget https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors -O /comfyui/models/text_encoders/umt5-xxl-enc-fp8_e4m3fn.safetensors 
-RUN wget https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors -O /comfyui/models/controlnet/Wan21_Uni3C_controlnet_fp16.safetensors
+RUN wget -P /comfyui/models/lora https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
+RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors 
+RUN wget -P /comfyui/models/vae https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors
+RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors 
+RUN wget -P /comfyui/models/text_encoders https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors 
+RUN wget -P /comfyui/models/controlnet https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors
 #Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
 #WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
 #Wan2_1_VAE_bf16.safetensors
