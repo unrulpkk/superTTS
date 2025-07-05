@@ -60,8 +60,8 @@ RUN git clone https://github.com/christian-byrne/audio-separation-nodes-comfyui.
 RUN git clone -b multitalk https://github.com/kijai/ComfyUI-WanVideoWrapper.git
 WORKDIR /comfyui/custom_nodes/ComfyUI_LayerStyle
 RUN pip install -r requirements.txt
-WORKDIR /comfyui/custom_nodes/KJNodes
-RUN pip install -r requirements.txt
+#WORKDIR /comfyui/custom_nodes/KJNodes
+#RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/audio-separation-nodes-comfyui
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
