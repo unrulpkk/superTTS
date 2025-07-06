@@ -58,6 +58,7 @@ RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle.git
 RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git
 RUN git clone https://github.com/christian-byrne/audio-separation-nodes-comfyui.git
 RUN git clone -b multitalk https://github.com/kijai/ComfyUI-WanVideoWrapper.git
+RUN git clone https://github.com/crystian/ComfyUI-Crystools.git
 WORKDIR /comfyui/custom_nodes/ComfyUI_LayerStyle
 RUN pip install -r requirements.txt
 #WORKDIR /comfyui/custom_nodes/KJNodes
@@ -65,6 +66,8 @@ RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/audio-separation-nodes-comfyui
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
+RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes/ComfyUI-Crystools
 RUN pip install -r requirements.txt
 #Multitalk
 RUN wget -P /comfyui/models/lora https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
@@ -93,13 +96,17 @@ RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/
 WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
 RUN pip install -r requirements.txt
 # 编译 CUDA 扩展并放入模型路径下，防止运行时重新 build
-WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
-RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 \
-    python3 setup.py build_ext --inplace
+# 编译 CUDA 扩展
+WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
+RUN apt-get install -y ninja-build
+RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 python3 setup_cuda.py build_ext --inplace
+
+# 可选复制（如果你后面启动期望 .so 文件已在 build/ 中）
+RUN mkdir -p build && cp anti_alias_activation_cuda*.so build/
 
 # 将生成的 .so 文件复制到推理运行时路径（可选，根据 ComfyUI-Index-TTS 中 import path 来定）
-RUN mkdir -p /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build && \
-    cp anti_alias_activation_cuda*.so /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build/
+#RUN mkdir -p /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build && \
+#    cp anti_alias_activation_cuda*.so /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build/
 #RUN pip show transformers torch
 # 添加脚本并执行一次
 COPY preload_indextts.py /comfyui/
