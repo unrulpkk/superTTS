@@ -98,8 +98,8 @@ RUN pip install -r requirements.txt
 # 编译 CUDA 扩展并放入模型路径下，防止运行时重新 build
 # 编译 CUDA 扩展
 WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
-RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 \
-    python3 setup_cuda.py build_ext --inplace
+RUN apt-get install -y ninja-build
+RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 python3 setup_cuda.py build_ext --inplace
 
 # 可选复制（如果你后面启动期望 .so 文件已在 build/ 中）
 RUN mkdir -p build && cp anti_alias_activation_cuda*.so build/
