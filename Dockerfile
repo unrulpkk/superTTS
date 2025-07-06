@@ -112,7 +112,7 @@ COPY preload_indextts.py /comfyui/
 #RUN python3 /comfyui/preload_indextts.py
 # 提前 warmup
 COPY preload_warmup.py /comfyui/
-RUN python3 /comfyui/preload_warmup.py
+#RUN python3 /comfyui/preload_warmup.py
 
 # 字体缓存
 RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
