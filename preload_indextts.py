@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/comfyui/custom_nodes/ComfyUI-Index-TTS")
 # preload_indextts.py
 from indextts.models import IndexTTSModel
 
