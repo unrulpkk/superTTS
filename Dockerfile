@@ -109,7 +109,7 @@ RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 python3 setup.py build_ext -
 #RUN pip show transformers torch
 # 添加脚本并执行一次
 COPY preload_indextts.py /comfyui/
-RUN python3 /comfyui/preload_indextts.py
+#RUN python3 /comfyui/preload_indextts.py
 # 提前 warmup
 COPY preload_warmup.py /comfyui/
 RUN python3 /comfyui/preload_warmup.py
