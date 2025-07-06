@@ -58,6 +58,7 @@ RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle.git
 RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git
 RUN git clone https://github.com/christian-byrne/audio-separation-nodes-comfyui.git
 RUN git clone -b multitalk https://github.com/kijai/ComfyUI-WanVideoWrapper.git
+RUN git clone https://github.com/crystian/ComfyUI-Crystools.git
 WORKDIR /comfyui/custom_nodes/ComfyUI_LayerStyle
 RUN pip install -r requirements.txt
 #WORKDIR /comfyui/custom_nodes/KJNodes
@@ -65,6 +66,8 @@ RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/audio-separation-nodes-comfyui
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
+RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes/ComfyUI-Crystools
 RUN pip install -r requirements.txt
 #Multitalk
 RUN wget -P /comfyui/models/lora https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
