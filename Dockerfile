@@ -115,7 +115,7 @@ COPY preload_warmup.py /comfyui/
 #RUN python3 /comfyui/preload_warmup.py
 
 # 字体缓存
-RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
+#RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
