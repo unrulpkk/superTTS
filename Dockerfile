@@ -88,25 +88,20 @@ RUN wget -P /comfyui/models/controlnet https://huggingface.co/Kijai/WanVideo_com
 #RUN python3 modelscopedown.py
 #RUN modelscope download cjc1887415157/stable-video-diffusion-img2vid-xt-1-1 --local-dir /comfyui/models/checkpoints
 #安装indextts
-WORKDIR /comfyui/custom_nodes/
-RUN git clone https://github.com/chenpipi0807/ComfyUI-Index-TTS.git
-WORKDIR /comfyui/models/
-RUN mkdir IndexTTS-1.5
-RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
-WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
-RUN pip install -r requirements.txt
-COPY setup.py /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/setup.py
-# 编译 CUDA 扩展并放入模型路径下，防止运行时重新 build
-# 编译 CUDA 扩展
-WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
-RUN apt-get install -y ninja-build
-WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
-RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 python3 setup.py build_ext --inplace
+#WORKDIR /comfyui/custom_nodes/
+#RUN git clone https://github.com/chenpipi0807/ComfyUI-Index-TTS.git
+#WORKDIR /comfyui/models/
+#RUN mkdir IndexTTS-1.5
+#RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
+#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
+#RUN pip install -r requirements.txt
+#COPY setup.py /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/setup.py
 
-# 将生成的 .so 文件复制到推理运行时路径（可选，根据 ComfyUI-Index-TTS 中 import path 来定）
-#RUN mkdir -p /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build && \
-#    cp anti_alias_activation_cuda*.so /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/build/
-#RUN pip show transformers torch
+#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
+#RUN apt-get install -y ninja-build
+#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
+#RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 python3 setup.py build_ext --inplace
+
 # 添加脚本并执行一次
 COPY preload_indextts.py /comfyui/
 #RUN python3 /comfyui/preload_indextts.py
