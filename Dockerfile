@@ -31,14 +31,6 @@ RUN pip install torch torchvision torchaudio --extra-index-url https://download.
 RUN apt-get update && \
     apt-get install -y git-lfs && \
     git lfs install     
-WORKDIR /comfyui/custom_nodes    
-RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git
-WORKDIR /comfyui/custom_nodes/was-node-suite-comfyui
-RUN pip install -r requirements.txt
-WORKDIR /comfyui/custom_nodes/
-RUN git clone https://github.com/unrulpkk/comfyuifunaudiollmv3.git
-WORKDIR /comfyui/custom_nodes/comfyuifunaudiollmv3
-RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/
 RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 WORKDIR /comfyui/custom_nodes/ComfyUI-VideoHelperSuite
@@ -81,11 +73,6 @@ COPY preload_warmup.py /comfyui/
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
-
-WORKDIR /comfyui
-
-RUN git clone https://huggingface.co/FunAudioLLM/CosyVoice2-0.5B.git  models/CosyVoice/CosyVoice2-0.5B
-
 WORKDIR /comfyui/input
 RUN wget https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3
 # python 加速 flag
