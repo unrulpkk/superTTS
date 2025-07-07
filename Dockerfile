@@ -55,6 +55,10 @@ WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
 RUN pip install -r requirements.txt
 WORKDIR /comfyui/custom_nodes/ComfyUI-Crystools
 RUN pip install -r requirements.txt
+WORKDIR /comfyui/custom_nodes    
+RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git
+WORKDIR /comfyui/custom_nodes/was-node-suite-comfyui
+RUN pip install -r requirements.txt
 #Multitalk
 RUN wget -P /comfyui/models/lora https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
 RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors 
