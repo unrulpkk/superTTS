@@ -1,9 +1,6 @@
-# Use Nvidia CUDA base image
 FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
 RUN apt-get update && apt-get install -y cuda-nvcc-12-4
-RUN apt-get install -y  cuda-toolkit-12-4 
 RUN nvcc --version
-#FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04 as base
 # Install libGL.so.1
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -21,10 +18,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git \
     wget
-# Clean up to reduce image size
-# RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y libgl1-mesa-glx && apt-get install -y ffmpeg 
-# Clone ComfyUI repository
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 
 # Change working directory to ComfyUI
@@ -76,53 +70,17 @@ RUN wget -P /comfyui/models/vae https://huggingface.co/Kijai/WanVideo_comfy/reso
 RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors 
 RUN wget -P /comfyui/models/text_encoders https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors 
 RUN wget -P /comfyui/models/controlnet https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors
-#Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
-#WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
-#Wan2_1_VAE_bf16.safetensors
-#Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
-#umt5-xxl-enc-fp8_e4m3fn.safetensors
-#Wan21_Uni3C_controlnet_fp16.safetensors 
-#WORKDIR /comfyui/models/
-#WORKDIR /
-#ADD modelscopedown.py ./
-#RUN python3 modelscopedown.py
-#RUN modelscope download cjc1887415157/stable-video-diffusion-img2vid-xt-1-1 --local-dir /comfyui/models/checkpoints
-#安装indextts
-#WORKDIR /comfyui/custom_nodes/
-#RUN git clone https://github.com/chenpipi0807/ComfyUI-Index-TTS.git
-#WORKDIR /comfyui/models/
-#RUN mkdir IndexTTS-1.5
-#RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
-#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
-#RUN pip install -r requirements.txt
-#COPY setup.py /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda/setup.py
-
-#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
-#RUN apt-get install -y ninja-build
-#WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS/indextts/BigVGAN/alias_free_activation/cuda
-#RUN TORCH_CUDA_ARCH_LIST="7.5;8.0;8.9" FORCE_CUDA=1 python3 setup.py build_ext --inplace
-
 # 添加脚本并执行一次
 COPY preload_indextts.py /comfyui/
 #RUN python3 /comfyui/preload_indextts.py
 # 提前 warmup
 COPY preload_warmup.py /comfyui/
 #RUN python3 /comfyui/preload_warmup.py
-
 # 字体缓存
 #RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
-# RUN git clone https://github.com/zhilengjun/ComfyUI-FunAudioLLM_V2.git custom_nodes/ComfyUI-FunAudioLLM_V2
-
-# RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git custom_nodes/was-node-suite-comfyui
-
-
-# WORKDIR /comfyui/custom_nodes/ComfyUI-FunAudioLLM_V2
-# RUN pip install --no-cache-dir -r requirements.txt
-# WORKDIR /comfyui/custom_nodes/was-node-suite-comfyui
-# RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /comfyui
 
