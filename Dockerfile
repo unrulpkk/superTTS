@@ -75,10 +75,9 @@ WORKDIR /comfyui
 RUN pip install runpod requests
 WORKDIR /comfyui/input
 RUN wget https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3
-# python 加速 flag
-ENV PYTHONOPTIMIZE=2
-ENV PYTHONUNBUFFERED=1
-ENV TRANSFORMERS_VERBOSITY=error
+RUN pip uninstall -y torio torchaudio transformers && \
+    pip install torchaudio --index-url https://download.pytorch.org/whl/cu126 && \
+    pip install transformers==4.39.3
 # Go back to the root
 WORKDIR /
 # Add the start and the handler
