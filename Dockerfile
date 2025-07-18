@@ -63,25 +63,6 @@ WORKDIR /comfyui/custom_nodes
 RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git
 WORKDIR /comfyui/custom_nodes/was-node-suite-comfyui
 RUN pip install -r requirements.txt
-#Multitalk
-RUN wget -P /comfyui/models/loras https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
-RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors 
-RUN wget -P /comfyui/models/vae https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors
-RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors 
-RUN wget -P /comfyui/models/text_encoders https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors 
-RUN wget -P /comfyui/models/controlnet https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors
-RUN wget -P /comfyui/models/clip_vision https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
-#Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
-#WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
-#Wan2_1_VAE_bf16.safetensors
-#Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
-#umt5-xxl-enc-fp8_e4m3fn.safetensors
-#Wan21_Uni3C_controlnet_fp16.safetensors 
-#WORKDIR /comfyui/models/
-#WORKDIR /
-#ADD modelscopedown.py ./
-#RUN python3 modelscopedown.py
-#RUN modelscope download cjc1887415157/stable-video-diffusion-img2vid-xt-1-1 --local-dir /comfyui/models/checkpoints
 #安装indextts
 WORKDIR /comfyui/custom_nodes/
 WORKDIR /comfyui
