@@ -25,72 +25,22 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y libgl1-mesa-glx && apt-get install -y ffmpeg 
 # Clone ComfyUI repository
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
-
 # Change working directory to ComfyUI
 WORKDIR /comfyui
-
 # Install ComfyUI 
 RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu124 \
     && pip install -r requirements.txt
 # 安装 git-lfs
 RUN apt-get install -y git-lfs && \
     git lfs install     
-WORKDIR /comfyui/custom_nodes/
-RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-WORKDIR /comfyui/custom_nodes/ComfyUI-VideoHelperSuite
-RUN pip install -r requirements.txt
-WORKDIR /comfyui/models/
 RUN pip install -U modelscope
-#Multitalk
 WORKDIR /comfyui/custom_nodes/
-RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
-RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle.git
-RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git
-RUN git clone https://github.com/christian-byrne/audio-separation-nodes-comfyui.git
-RUN git clone -b multitalk https://github.com/kijai/ComfyUI-WanVideoWrapper.git
-RUN git clone https://github.com/crystian/ComfyUI-Crystools.git
-WORKDIR /comfyui/custom_nodes/ComfyUI_LayerStyle
+RUN git clone https://github.com/chenpipi0807/ComfyUI-Index-TTS.git
+WORKDIR /comfyui/models/
+RUN mkdir IndexTTS-1.5
+RUN huggingface-cli download IndexTeam/IndexTTS-1.5 --local-dir /comfyui/models/IndexTTS-1.5
+WORKDIR /comfyui/custom_nodes/ComfyUI-Index-TTS
 RUN pip install -r requirements.txt
-#WORKDIR /comfyui/custom_nodes/KJNodes
-#RUN pip install -r requirements.txt
-WORKDIR /comfyui/custom_nodes/audio-separation-nodes-comfyui
-RUN pip install -r requirements.txt
-WORKDIR /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
-RUN pip install -r requirements.txt
-WORKDIR /comfyui/custom_nodes/ComfyUI-Crystools
-RUN pip install -r requirements.txt
-WORKDIR /comfyui/custom_nodes    
-RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git
-WORKDIR /comfyui/custom_nodes/was-node-suite-comfyui
-RUN pip install -r requirements.txt
-#Multitalk
-RUN wget -P /comfyui/models/loras https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
-RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors 
-RUN wget -P /comfyui/models/vae https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors
-RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors 
-RUN wget -P /comfyui/models/text_encoders https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors 
-RUN wget -P /comfyui/models/controlnet https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors
-RUN wget -P /comfyui/models/clip_vision https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
-#Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
-#WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
-#Wan2_1_VAE_bf16.safetensors
-#Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
-#umt5-xxl-enc-fp8_e4m3fn.safetensors
-#Wan21_Uni3C_controlnet_fp16.safetensors 
-#WORKDIR /comfyui/models/
-#WORKDIR /
-#ADD modelscopedown.py ./
-#RUN python3 modelscopedown.py
-#RUN modelscope download cjc1887415157/stable-video-diffusion-img2vid-xt-1-1 --local-dir /comfyui/models/checkpoints
-#安装indextts
-WORKDIR /comfyui/custom_nodes/
-WORKDIR /comfyui
-# Install runpod
-RUN pip install runpod requests
-RUN pip install oss2
-RUN pip install sageattention
-WORKDIR /comfyui/input
-RUN wget https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3
 # Go back to the root
 WORKDIR /
 # Add the start and the handler
