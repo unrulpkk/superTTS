@@ -1,6 +1,8 @@
+# Use Nvidia CUDA base image
 FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS base
 RUN apt-get update && apt-get install -y cuda-nvcc-12-4
 RUN nvcc --version
+#FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04 as base
 # Install libGL.so.1
 # Prevents prompts from packages asking for user input during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,7 +20,10 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git \
     wget
+# Clean up to reduce image size
+# RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y libgl1-mesa-glx && apt-get install -y ffmpeg 
+# Clone ComfyUI repository
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 
 # Change working directory to ComfyUI
@@ -28,8 +33,7 @@ WORKDIR /comfyui
 RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu124 \
     && pip install -r requirements.txt
 # 安装 git-lfs
-RUN apt-get update && \
-    apt-get install -y git-lfs && \
+RUN apt-get install -y git-lfs && \
     git lfs install     
 WORKDIR /comfyui/custom_nodes/
 RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
@@ -60,28 +64,33 @@ RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git
 WORKDIR /comfyui/custom_nodes/was-node-suite-comfyui
 RUN pip install -r requirements.txt
 #Multitalk
-RUN wget -P /comfyui/models/lora https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
+RUN wget -P /comfyui/models/loras https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors 
 RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors 
 RUN wget -P /comfyui/models/vae https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors
 RUN wget -P /comfyui/models/diffusion_models https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors 
 RUN wget -P /comfyui/models/text_encoders https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors 
 RUN wget -P /comfyui/models/controlnet https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors
-# 添加脚本并执行一次
-COPY preload_indextts.py /comfyui/
-#RUN python3 /comfyui/preload_indextts.py
-# 提前 warmup
-COPY preload_warmup.py /comfyui/
-#RUN python3 /comfyui/preload_warmup.py
-# 字体缓存
-#RUN python3 -c "from matplotlib import font_manager; font_manager._rebuild()"
+RUN wget -P /comfyui/models/clip_vision https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
+#Wan21_T2V_14B_lightx2v_cfg_step_distill_lora_rank32.safetensors
+#WanVideo_2_1_Multitalk_14B_fp8_e4m3fn.safetensors
+#Wan2_1_VAE_bf16.safetensors
+#Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors
+#umt5-xxl-enc-fp8_e4m3fn.safetensors
+#Wan21_Uni3C_controlnet_fp16.safetensors 
+#WORKDIR /comfyui/models/
+#WORKDIR /
+#ADD modelscopedown.py ./
+#RUN python3 modelscopedown.py
+#RUN modelscope download cjc1887415157/stable-video-diffusion-img2vid-xt-1-1 --local-dir /comfyui/models/checkpoints
+#安装indextts
+WORKDIR /comfyui/custom_nodes/
 WORKDIR /comfyui
 # Install runpod
 RUN pip install runpod requests
+RUN pip install oss2
+RUN pip install sageattention
 WORKDIR /comfyui/input
 RUN wget https://comfyuiyihuan.oss-cn-hangzhou.aliyuncs.com/bd3d3f9b-ce6c-435e-9555-13407f59d7e7.mp3
-RUN pip uninstall -y torio torchaudio transformers && \
-    pip install torchaudio --index-url https://download.pytorch.org/whl/cu126 && \
-    pip install transformers==4.39.3
 # Go back to the root
 WORKDIR /
 # Add the start and the handler
