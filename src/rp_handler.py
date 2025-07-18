@@ -17,7 +17,7 @@ COMFY_API_AVAILABLE_MAX_RETRIES = 500
 # Time to wait between poll attempts in milliseconds
 COMFY_POLLING_INTERVAL_MS = int(os.environ.get("COMFY_POLLING_INTERVAL_MS", 250))
 # Maximum number of poll attempts
-COMFY_POLLING_MAX_RETRIES = int(os.environ.get("COMFY_POLLING_MAX_RETRIES", 500))
+COMFY_POLLING_MAX_RETRIES = int(os.environ.get("COMFY_POLLING_MAX_RETRIES", 3000))
 # Host where ComfyUI is running
 COMFY_HOST = "127.0.0.1:8188"
 # Enforce a clean state after each job is done
@@ -262,24 +262,19 @@ def process_output_result(outputs, job_id):
             "message": "outputs 为空，没有文件需要处理。"
         }
 
-    # 获取 outputs.items() 的第一个元素
-    node_id, node_output = next(iter(outputs.items()))
-
-    # 检查是否有文件信息
-    file_info_list = None
-    if node_output:
-        # 假设文件信息总是在 node_output 的第一个键对应的值中
-        first_key = next(iter(node_output))
-        file_info_list = node_output[first_key]
-
-    if not file_info_list:
+    file_info = None
+    for node_id, node_output in outputs.items():
+        if isinstance(node_output, dict):
+            for key, value in node_output.items():
+                if isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
+                    if 'filename' in value[0]:
+                        file_info = value[0]
+                        break
+    if not file_info:
         return {
             "status": "error",
             "message": "未找到可处理的文件信息。"
         }
-
-    # 获取第一个文件信息
-    file_info = file_info_list[0]
     filename = file_info["filename"]
     subfolder = file_info["subfolder"]
     # The path where ComfyUI stores the generated images
@@ -378,6 +373,13 @@ def handler(job):
         return {"error": f"Error waiting for image generation: {str(e)}"}
 
     #生成的文件名称不固定，所有只能查询取到 
+    filesoutputs = history[prompt_id].get("outputs")
+    print(
+        f"[INFO] filesoutputs tracking | prompt_id: {prompt_id} | "
+        f"type: {type(filesoutputs).__name__} | "
+        f"length: {len(filesoutputs) if isinstance(filesoutputs, (list, dict)) else 'N/A'} | "
+        f"sample_content: {str(filesoutputs)[:1000] if filesoutputs is not None else 'None'}"
+    )
     files_result = process_output_result(history[prompt_id].get("outputs"), job["id"])
     upload_files_result = []
     #生成的文件名和输入的名字一样，可以直接操作,后面建议直接runpod的网盘操作，减少时间
